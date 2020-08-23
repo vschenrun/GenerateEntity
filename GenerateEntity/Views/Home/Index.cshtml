@@ -1,0 +1,173 @@
+﻿@{
+    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    /* .tableX为要显示滚动条的类名 */
+    /* 显示横向滚动条 */
+    .tableX .el-table--scrollable-x .el-table__body-wrapper {
+        padding: 0 0 5px 0;
+        margin: 0 0 5px 0;
+        overflow-x: auto;
+    }
+    /* 滚动条的滑块样式 */
+    .tableX .el-table .el-table__body-wrapper::-webkit-scrollbar-thumb {
+        background-color: #ccc !important;
+        border-radius: 30px !important;
+    }
+</style>
+<div id="app">
+    <el-container>
+        <el-header style="padding-top:20px;"> <h2>SqlSugar 代码生成器</h2></el-header>
+        <el-container>
+            <el-main>
+                <template>
+                    <el-form ref="form" :model="form" label-width="160px">
+                        <el-form-item label="数据库地址:">
+                            <el-input v-model="form.dbaddress" placeholder="Server=xx.xx.xx.xx; Port=xx;Database=xxxx; Uid=xxxx;Pwd=xxxx;" style="font-size:20px;font-family:'Microsoft YaHei'"></el-input>
+                        </el-form-item>
+                        <el-form-item label="数据库类型">
+                            <el-select v-model="form.dbtype" placeholder="请选择数据库类型" style="font-size:20px;font-family:'Microsoft YaHei';width:400px;">
+                                <el-option label="Mysql" value="0"></el-option>
+                                <el-option label="SqlServer" value="1"></el-option>
+                            </el-select>
+                            <el-input v-model="form.tablename" style="font-size:20px;font-family:'Microsoft YaHei';width:400px;" placeholder="请输入表名或者描述"></el-input>
+                            <el-button :type="buttoncolor" :loading="isloading" @@click="dbLink()">连接 / 查询</el-button>
+                            <el-button :type="buttoncolor" :loading="isloading" @@click="createCode()">代码生成</el-button>
+                            <lable style="font-size:20px;padding-left:100px; font-family:'Microsoft YaHei'">总共找到 {{total}} 张表</lable>
+                        </el-form-item>
+                    </el-form>
+                </template>
+                <template>
+                    <el-table ref="multipleTable"
+                              :data="tableData"
+                              tooltip-effect="dark"
+                              style="width: 100%"
+                              @@selection-change="handleSelectionChange">
+                        <el-table-column type="selection"
+                                         width="55">
+                        </el-table-column>
+                        <el-table-column prop="Name"
+                                         label="名称"
+                                         show-overflow-tooltip>
+                        </el-table-column>
+                        <el-table-column prop="Description"
+                                         label="描述"
+                                         show-overflow-tooltip>
+                        </el-table-column>
+                        <el-table-column prop="DbObjectType"
+                                         label="类型"
+                                         show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <el-tag v-if="scope.row.DbObjectType === 0" type="success">Table</el-tag>
+                                <el-tag v-else-if="scope.row.nStatus === 1" type="info">View</el-tag>
+                                <el-tag v-else-if="scope.row.nStatus === 2" type="info">All</el-tag>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </template>
+            </el-main>
+        </el-container>
+    </el-container>
+</div>
+<script>
+    var app = new Vue({
+        el: "#app",
+        data() {
+            return {
+                form: {
+                    dbaddress: "@ViewBag.dbLink",
+                    dbtype: "@ViewBag.dbType",
+                    tablename: "",
+                },
+                tableData: [],
+                multipleSelection: [],
+                isloading: false,
+                buttoncolor: "primary",
+                total: 0,
+            }
+        },
+        methods: {
+            toggleSelection(rows) {
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.multipleTable.toggleRowSelection(row);
+                    });
+                } else {
+                    this.$refs.multipleTable.clearSelection();
+                }
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
+            handleOpen(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClose(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            dbLink() {
+                var self = this;
+                if (self.form.dbaddress.length == 0) {
+                    self.$message.error("请输入数据库链接");
+                    return;
+                }
+                self.isloading = true;
+                axios.post('/Home/LinkServer', {
+                    dbLink: self.form.dbaddress,
+                    dbType: self.form.dbtype,
+                    tableName: self.form.tablename
+                }).then(function (response) {
+                        if (response.data.res) {
+                            self.buttoncolor = "success";
+                            console.log(response.data.info);
+                            self.tableData = [];
+                            self.tableData = response.data.info;
+                            self.total = response.data.info.length;
+                        } else {
+                            self.buttoncolor = "danger";
+                            self.$message.error(response.data.msg);
+                        }
+                        console.log("this.tableData", self.tableData);
+                    })
+                    .catch(function (error) {
+                        self.buttoncolor = "danger";
+                        console.log(error);
+                    });
+                self.isloading = false;
+            },
+            createCode() {
+                var self = this;
+                if (self.multipleSelection.length == 0) {
+                    self.$message.error("请选择需要操作的表");
+                    return;
+                }
+                axios({
+                    url: "/Home/GenerateEntity",
+                    method: 'post',
+                    responseType: 'blob',
+                    data: {
+                      dbLink: self.form.dbaddress,
+                      dbType: self.form.dbtype,
+                        TableName: self.multipleSelection
+                    }
+                }).then(function (res) {
+                    self.toggleSelection();
+                    var blob = new Blob([res.data], { type: res.headers['content-type'] });
+                    var downloadElement = document.createElement('a');
+                    var href = window.URL.createObjectURL(blob); //创建下载的链接
+                    downloadElement.href = href;
+                    downloadElement.download = "code"+new Date().getTime()+".zip"; //下载后文件名
+                    document.body.appendChild(downloadElement);
+                    downloadElement.click(); //点击下载
+                    document.body.removeChild(downloadElement); //下载完成移除元素
+                    window.URL.revokeObjectURL(href); //释放掉blob对象
+                }).catch(function () {
+                })
+                self.isloading = false;
+            }
+
+        }
+    });
+</script>
+
