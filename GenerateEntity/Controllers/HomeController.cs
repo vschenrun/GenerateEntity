@@ -43,9 +43,9 @@ namespace GenerateEntity.Controllers
         public JsonResult LinkServer(string dbLink, DbType dbType, string tableName)
         {
             ResultInfo result = new ResultInfo();
+            SqlSugarClient db = GetSugarClient(dbLink, dbType);
             try
-            {
-                SqlSugarClient db = GetSugarClient(dbLink, dbType);
+            {             
                 List<DbTableInfo> list = db.DbMaintenance.GetTableInfoList();
                 if (!string.IsNullOrEmpty(tableName))  //模糊查询
                 {
@@ -77,12 +77,15 @@ namespace GenerateEntity.Controllers
                     cookie.Values.Add("dbType", dbType.ToString());
                     Response.AppendCookie(cookie);
                 }
-
+                db.Dispose();
+                db.Close();
                 result.res = true;
                 result.msg = "链接成功！";
             }
             catch (Exception ex)
             {
+                db.Dispose();
+                db.Close();
                 result.msg = ex.Message;
             }
 
