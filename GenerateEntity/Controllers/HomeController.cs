@@ -51,7 +51,7 @@ namespace GenerateEntity.Controllers
             SqlSugarClient db = GetSugarClient(dbLink, dbType);
             try
             {
-                List<DbTableInfo> list = db.DbMaintenance.GetTableInfoList();
+                List<DbTableInfo> list = db.DbMaintenance.GetTableInfoList(false);
                 if (!string.IsNullOrEmpty(tableName))  //模糊查询
                 {
                     List<DbTableInfo> tableList = list.Where<DbTableInfo>(t => t.Name.Contains(tableName) || t.Description.Contains(tableName)).ToList();
