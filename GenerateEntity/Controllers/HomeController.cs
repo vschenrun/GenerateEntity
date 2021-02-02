@@ -33,6 +33,11 @@ namespace GenerateEntity.Controllers
             return View();
         }
 
+        public ActionResult Image()
+        {
+            return View();
+        }
+
         /// <summary>
         /// 链接数据库并查询
         /// </summary>
@@ -45,7 +50,7 @@ namespace GenerateEntity.Controllers
             ResultInfo result = new ResultInfo();
             SqlSugarClient db = GetSugarClient(dbLink, dbType);
             try
-            {             
+            {
                 List<DbTableInfo> list = db.DbMaintenance.GetTableInfoList();
                 if (!string.IsNullOrEmpty(tableName))  //模糊查询
                 {
@@ -259,6 +264,24 @@ namespace Repository
             public string msg { get; set; }  //返回信息
             public int startcode { get; set; }  //返回http的状态码
             public Object info { get; set; }  //返回的结果（res为true时返回结果集，res为false时返回错误提示）
+        }
+
+        public JsonResult CheckImage(string imageUrl1, string imageUrl2)
+        {
+            ResultInfo result = new ResultInfo();
+            bool img = ImageHelper.IsSameImg(imageUrl1, imageUrl2);
+            if (img)
+            {
+                result.res = true;
+                result.msg = "是同一张图片！";
+            }
+            else
+            {
+                result.res = false;
+                result.msg = "不是同一张图片！";
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
     }
 }

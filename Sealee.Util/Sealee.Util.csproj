@@ -114,6 +114,7 @@
     <Compile Include="DbHelper.cs" />
     <Compile Include="DESEncrypt\DESEncrypt.cs" />
     <Compile Include="HttpHelper.cs" />
+    <Compile Include="ImageHelper.cs" />
     <Compile Include="NopiHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Qurl.cs" />

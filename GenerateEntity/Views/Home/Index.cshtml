@@ -35,6 +35,7 @@
                             <el-button :type="buttoncolor" :loading="isloading" @@click="dbLink()">连接 / 查询</el-button>
                             <el-button :type="buttoncolor" :loading="isloading" @@click="createCode()">代码生成</el-button>
                             <lable style="font-size:20px;padding-left:100px; font-family:'Microsoft YaHei'">总共找到 {{total}} 张表</lable>
+                            <el-button :type="buttoncolor" :loading="isloading" @@click="checkImage()">比较图片</el-button>
                         </el-form-item>
                     </el-form>
                 </template>
@@ -118,18 +119,18 @@
                     dbType: self.form.dbtype,
                     tableName: self.form.tablename
                 }).then(function (response) {
-                        if (response.data.res) {
-                            self.buttoncolor = "success";
-                            console.log(response.data.info);
-                            self.tableData = [];
-                            self.tableData = response.data.info;
-                            self.total = response.data.info.length;
-                        } else {
-                            self.buttoncolor = "danger";
-                            self.$message.error(response.data.msg);
-                        }
-                        console.log("this.tableData", self.tableData);
-                    })
+                    if (response.data.res) {
+                        self.buttoncolor = "success";
+                        console.log(response.data.info);
+                        self.tableData = [];
+                        self.tableData = response.data.info;
+                        self.total = response.data.info.length;
+                    } else {
+                        self.buttoncolor = "danger";
+                        self.$message.error(response.data.msg);
+                    }
+                    console.log("this.tableData", self.tableData);
+                })
                     .catch(function (error) {
                         self.buttoncolor = "danger";
                         console.log(error);
@@ -147,8 +148,8 @@
                     method: 'post',
                     responseType: 'blob',
                     data: {
-                      dbLink: self.form.dbaddress,
-                      dbType: self.form.dbtype,
+                        dbLink: self.form.dbaddress,
+                        dbType: self.form.dbtype,
                         TableName: self.multipleSelection
                     }
                 }).then(function (res) {
@@ -157,7 +158,7 @@
                     var downloadElement = document.createElement('a');
                     var href = window.URL.createObjectURL(blob); //创建下载的链接
                     downloadElement.href = href;
-                    downloadElement.download = "code"+new Date().getTime()+".zip"; //下载后文件名
+                    downloadElement.download = "code" + new Date().getTime() + ".zip"; //下载后文件名
                     document.body.appendChild(downloadElement);
                     downloadElement.click(); //点击下载
                     document.body.removeChild(downloadElement); //下载完成移除元素
@@ -165,6 +166,10 @@
                 }).catch(function () {
                 })
                 self.isloading = false;
+            },
+            checkImage()
+            {
+                window.location.href = "/Home/Image";
             }
 
         }

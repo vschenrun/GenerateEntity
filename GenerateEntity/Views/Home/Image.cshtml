@@ -1,0 +1,91 @@
+﻿@{
+    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="app">
+    <el-container>
+        <el-header style="padding-top:20px;"> <h2>SqlSugar 代码生成器</h2></el-header>
+        <el-container>
+            <el-main>
+                <template>
+                    <el-form ref="form" :model="form" label-width="160px">
+                        <el-form-item label="数据库地址:">
+                            <el-input v-model="form.imgeurl1" placeholder="Server=xx.xx.xx.xx; Port=xx;Database=xxxx; Uid=xxxx;Pwd=xxxx;" style="font-size:20px;font-family:'Microsoft YaHei'"></el-input>
+                        </el-form-item>
+                        <el-form-item label="数据库地址:">
+                            <el-input v-model="form.imgeurl2" placeholder="Server=xx.xx.xx.xx; Port=xx;Database=xxxx; Uid=xxxx;Pwd=xxxx;" style="font-size:20px;font-family:'Microsoft YaHei'"></el-input>
+                        </el-form-item>
+                        <el-form-item label="数据库类型">
+                            <el-button :type="buttoncolor" :loading="isloading" @@click="checkImage()">比较图片</el-button>
+                        </el-form-item>
+                    </el-form>
+                </template>
+            </el-main>
+        </el-container>
+    </el-container>
+</div>
+<script>
+    var app = new Vue({
+        el: "#app",
+        data() {
+            return {
+                form: {
+                    imgeurl1: "https://wx.qlogo.cn/mmhead/ver_1/M1wwAt56JYJduiaaQLibn6WayTJzwb6kG99NUMOpbhf3nQPuUj7GwVLiaY0vWBICCJQ9Jg2IHHSiclqkQWh8v6icUag/132",
+                    imgeurl2: "https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83epgZcfEl6u8tgugvafXmBmN1pzVqAZydTAu93tPTO9OcQKD51ibSgSWibYV7CiaSIAib9ldM1mgwliaRSA/132",
+                },
+                multipleSelection: [],
+                isloading: false,
+                buttoncolor: "primary",
+                total: 0,
+            }
+        },
+        methods: {
+            toggleSelection(rows) {
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.multipleTable.toggleRowSelection(row);
+                    });
+                } else {
+                    this.$refs.multipleTable.clearSelection();
+                }
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
+            handleOpen(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClose(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            checkImage() {
+                var self = this;
+                if (self.form.imgeurl1.length == 0 || self.form.imgeurl2.length == 0) {
+                    self.$message.error("请输入图片地址");
+                    return;
+                }
+                self.isloading = true;
+                axios.post('/Home/CheckImage', {
+                    imageUrl1: self.form.imgeurl1,
+                    imageUrl2: self.form.imgeurl2
+                }).then(function (response) {
+                    if (response.data.res) {
+                        self.buttoncolor = "success";
+                        self.$message.success(response.data.msg);
+
+                    } else {
+                        self.buttoncolor = "danger";
+                        self.$message.error(response.data.msg);
+                    }
+                    console.log("this.tableData", self.tableData);
+                })
+                    .catch(function (error) {
+                        self.buttoncolor = "danger";
+                        console.log(error);
+                    });
+                self.isloading = false;
+            },
+        }
+    });
+</script>
+
