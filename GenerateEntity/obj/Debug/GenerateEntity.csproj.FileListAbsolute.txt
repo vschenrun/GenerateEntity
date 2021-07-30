@@ -79,7 +79,6 @@ E:\CRD\GenerateEntity\GenerateEntity\bin\zh-Hans\System.Web.Razor.resources.dll
 E:\CRD\GenerateEntity\GenerateEntity\bin\zh-Hans\System.Web.WebPages.resources.dll
 E:\CRD\GenerateEntity\GenerateEntity\bin\zh-Hans\System.Web.WebPages.Deployment.resources.dll
 E:\CRD\GenerateEntity\GenerateEntity\bin\zh-Hans\System.Web.WebPages.Razor.resources.dll
-E:\CRD\GenerateEntity\GenerateEntity\obj\Debug\GenerateEntity.csprojAssemblyReference.cache
 E:\CRD\GenerateEntity\GenerateEntity\obj\Debug\GenerateEntity.csproj.CoreCompileInputs.cache
 E:\CRD\GenerateEntity\GenerateEntity\obj\Debug\GenerateEntity.csproj.CopyComplete
 E:\CRD\GenerateEntity\GenerateEntity\obj\Debug\GenerateEntity.dll
@@ -119,3 +118,4 @@ E:\CRD\GenerateEntity\GenerateEntity\bin\System.Buffers.xml
 E:\CRD\GenerateEntity\GenerateEntity\bin\System.Memory.xml
 E:\CRD\GenerateEntity\GenerateEntity\bin\System.Numerics.Vectors.xml
 E:\CRD\GenerateEntity\GenerateEntity\bin\System.Runtime.CompilerServices.Unsafe.xml
+E:\CRD\GenerateEntity\GenerateEntity\obj\Debug\GenerateEntity.csproj.AssemblyReference.cache

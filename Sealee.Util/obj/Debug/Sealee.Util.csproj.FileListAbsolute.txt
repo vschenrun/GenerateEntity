@@ -142,8 +142,8 @@ E:\CRD\GenerateEntity\Sealee.Util\bin\Debug\System.Buffers.xml
 E:\CRD\GenerateEntity\Sealee.Util\bin\Debug\System.Memory.xml
 E:\CRD\GenerateEntity\Sealee.Util\bin\Debug\System.Numerics.Vectors.xml
 E:\CRD\GenerateEntity\Sealee.Util\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
-E:\CRD\GenerateEntity\Sealee.Util\obj\Debug\Sealee.Util.csprojAssemblyReference.cache
 E:\CRD\GenerateEntity\Sealee.Util\obj\Debug\Sealee.Util.csproj.CoreCompileInputs.cache
 E:\CRD\GenerateEntity\Sealee.Util\obj\Debug\Sealee.Util.csproj.CopyComplete
 E:\CRD\GenerateEntity\Sealee.Util\obj\Debug\Sealee.Util.dll
 E:\CRD\GenerateEntity\Sealee.Util\obj\Debug\Sealee.Util.pdb
+E:\CRD\GenerateEntity\Sealee.Util\obj\Debug\Sealee.Util.csproj.AssemblyReference.cache
