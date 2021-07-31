@@ -10,6 +10,11 @@ using System.Web.Mvc;
 
 namespace GenerateEntity.Controllers
 {
+    /// <summary>
+    /// 作者 chenrun
+    /// 版本: v1.0.0
+    /// 时间:2021-07-31 14:23:00
+    /// </summary>
     public class HomeController : Controller
     {
         /// <summary>
@@ -176,6 +181,10 @@ namespace GenerateEntity.Controllers
             StringBuilder strBuilder = new StringBuilder();
             strBuilder.Append($@"
 //--------------------------------------------------------------------
+//
+//     作者 chenrun
+//     版本: v1.0.0
+//     时间:{DateTime.Now.ToString("yyyy/M/d HH:mm:ss")}
 //     此代码由T4模板自动生成
 //	   生成时间 {DateTime.Now.ToString("yyyy/M/d HH:mm:ss")}
 //     对此文件的更改可能会导致不正确的行为，并且如果重新生成代码，这些更改将会丢失。
@@ -217,6 +226,9 @@ namespace IRepository
             StringBuilder strBuilder = new StringBuilder();
             strBuilder.Append($@"
 //--------------------------------------------------------------------
+//     作者 chenrun
+//     版本: v1.0.0
+//     时间:{DateTime.Now.ToString("yyyy/M/d HH:mm:ss")}
 //     此代码由T4模板自动生成
 //	   生成时间 {DateTime.Now.ToString("yyyy/M/d HH:mm:ss")}
 //     对此文件的更改可能会导致不正确的行为，并且如果重新生成代码，这些更改将会丢失。
