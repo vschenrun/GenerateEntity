@@ -125,7 +125,7 @@ namespace GenerateEntity.Controllers
         public FilePathResult GenerateEntity(string dbLink, DbType dbType, List<DbTableInfo> TableName)
         {
             string path = System.Web.HttpContext.Current.Server.MapPath("~/temp/") + DateTime.Now.ToString("yyyyMMddHHmmss") + "\\";
-            string filename = string.Format("Code{0}.zip", DateTime.Now.ToString("yyyyMMddHHmmss"));
+            string filename = string.Format("SqlSugarCode{0}.zip", DateTime.Now.ToString("yyyyMMddHHmmss"));
             string path1 = System.Web.HttpContext.Current.Server.MapPath("~/temp/") + filename;
             if (false == System.IO.Directory.Exists(path + "IRepository\\"))
             {
@@ -181,7 +181,6 @@ namespace GenerateEntity.Controllers
             StringBuilder strBuilder = new StringBuilder();
             strBuilder.Append($@"
 //--------------------------------------------------------------------
-//
 //     作者 chenrun
 //     版本: v1.0.0
 //     时间:{DateTime.Now.ToString("yyyy/M/d HH:mm:ss")}
